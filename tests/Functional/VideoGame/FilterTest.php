@@ -84,7 +84,13 @@ final class FilterTest extends FunctionalTestCase
     public function testShouldFilterWithNonExistentTag() {
 
         // Load page with parameters and an invalid tag
-        $this->client->request('GET', "/", ['page' => 1, 'limit' => 999, 'filter[tags]' => 999]);
+        $this->client->request('GET', "/", [
+            'page' => 1,
+            'limit' => 999,
+            'filter' => [
+                'tags' => [999]
+            ]
+        ]);
         self::assertResponseIsSuccessful();
 
         // Assert all games are displayed
