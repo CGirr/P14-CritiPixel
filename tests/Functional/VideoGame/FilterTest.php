@@ -98,6 +98,9 @@ final class FilterTest extends FunctionalTestCase
         self::assertSelectorCount($expectedCount, 'article.game-card');
     }
 
+    /**
+     * @return int[][]
+     */
     public static function filterDataProvider(): array
     {
         return [

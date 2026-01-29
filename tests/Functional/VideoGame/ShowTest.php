@@ -26,7 +26,7 @@ final class ShowTest extends FunctionalTestCase
         // Get review form
         $submitButton = $crawler->selectButton('Poster');
         $form = $submitButton->form();
-        $form['review[rating]'] = 4;
+        $form['review[rating]'] = '4';
         $form['review[comment]'] = 'Ce jeu est presque parfait !';
 
         // Post review form
@@ -58,7 +58,7 @@ final class ShowTest extends FunctionalTestCase
         $submitButton = $crawler->selectButton('Poster');
         $form = $submitButton->form();
         $form['review[rating]']->disableValidation();
-        $form['review[rating]'] = 6;
+        $form['review[rating]'] = '6';
         $form['review[comment]'] = 'Ce jeu est presque parfait !';
 
         // Post review form
