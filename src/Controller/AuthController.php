@@ -41,6 +41,8 @@ final class AuthController extends AbstractController
             return $this->redirectToRoute('auth_login');
         }
 
-        return $this->render('views/auth/register.html.twig', ['form' => $form]);
+        $statusCode = $form->isSubmitted() && !$form->isValid() ? Response::HTTP_UNPROCESSABLE_ENTITY : Response::HTTP_OK;
+
+        return $this->render('views/auth/register.html.twig', ['form' => $form], new Response(null, $statusCode));
     }
 }
