@@ -50,12 +50,17 @@ final class RegisterTest extends FunctionalTestCase
         yield 'invalid email' => [self::getFormData(['register[email]' => 'fail'])];
     }
 
+    /**
+     * @param array<string, mixed> $overrideData
+     *
+     * @return array<string, mixed>
+     */
     public static function getFormData(array $overrideData = []): array
     {
-        return [
+        return $overrideData + [
             'register[username]' => 'username',
             'register[email]' => 'user@email.com',
-            'register[plainPassword]' => 'SuperPassword123!'
-        ] + $overrideData;
+            'register[plainPassword]' => 'SuperPassword123!',
+        ];
     }
 }

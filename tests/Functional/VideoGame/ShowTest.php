@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 namespace App\Tests\Functional\VideoGame;
-use App\Model\Entity\Review;
 
+use App\Model\Entity\Review;
 use App\Tests\Functional\FunctionalTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -26,8 +26,8 @@ final class ShowTest extends FunctionalTestCase
         // Get review form
         $submitButton = $crawler->selectButton('Poster');
         $form = $submitButton->form();
-        $form['review[rating]'] = 4;
-        $form['review[comment]'] = "Ce jeu est presque parfait !";
+        $form['review[rating]'] = '4';
+        $form['review[comment]'] = 'Ce jeu est presque parfait !';
 
         // Post review form
         $this->client->submit($form);
@@ -58,8 +58,8 @@ final class ShowTest extends FunctionalTestCase
         $submitButton = $crawler->selectButton('Poster');
         $form = $submitButton->form();
         $form['review[rating]']->disableValidation();
-        $form['review[rating]'] = 6;
-        $form['review[comment]'] = "Ce jeu est presque parfait !";
+        $form['review[rating]'] = '6';
+        $form['review[comment]'] = 'Ce jeu est presque parfait !';
 
         // Post review form
         $this->client->submit($form);
@@ -79,7 +79,7 @@ final class ShowTest extends FunctionalTestCase
             'review' => [
                 'rating' => 4,
                 'comment' => 'Ce jeu est presque parfait !',
-            ]
+            ],
         ]);
 
         self::assertResponseStatusCodeSame(422);

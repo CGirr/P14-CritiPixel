@@ -1,0 +1,48 @@
+includes:
+    - vendor/phpstan/phpstan-doctrine/extension.neon
+    - vendor/phpstan/phpstan-doctrine/rules.neon
+    - vendor/phpstan/phpstan-symfony/extension.neon
+    - vendor/phpstan/phpstan-symfony/rules.neon
+    - vendor/phpstan/phpstan-phpunit/extension.neon
+    - vendor/phpstan/phpstan-phpunit/rules.neon
+
+parameters:
+    bootstrapFiles:
+        - tests/bootstrap.php
+    symfony:
+        containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml
+        consoleApplicationLoader: phpstan/console.php
+    scanDirectories:
+        - var/cache/dev/Symfony/Config
+    doctrine:
+        objectManagerLoader: phpstan/doctrine.php
+    level: 6
+    paths:
+        - config/
+        - src/
+        - tests/
+    ignoreErrors:
+        - '#Cannot call method disableValidation\(\)#'
+        - '#Class .+Form.+ extends generic class .+AbstractType#'
+        - '#type mapping mismatch#'
+        - '#Method .+ return type has no value type specified#'
+        - '#has parameter \$.+ with no value type specified#'
+
+        # Pagination Iterator
+        - '#Return type \(Traversable<.+>\) of method .+Pagination::getIterator#'
+        - '#Method .+Pagination::getIterator\(\) should return Traversable#'
+
+        # Bootstrap
+        - '#method_exists\(\).+will always evaluate to true#'
+
+       # Ignore remaining generic/callback issues
+        - '#Parameter \#(2|3) \$callback of function#'
+        - '#Property .+ with generic (interface|class)#'
+        - '#Method .+ return type with generic interface#'
+        - '#Class .+ extends generic class .+ but does not specify its types#'
+
+        # Template type resolution issues
+        - '#Unable to resolve the template type T in call to function#'
+
+        # Property without detailed array type
+        - '#Property .+::\$routeParameters type has no value type specified#'
