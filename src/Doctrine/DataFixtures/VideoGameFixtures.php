@@ -6,22 +6,15 @@ use App\Model\Entity\Review;
 use App\Model\Entity\Tag;
 use App\Model\Entity\User;
 use App\Model\Entity\VideoGame;
-use App\Rating\CalculateAverageRating;
-use App\Rating\CountRatingsPerValue;
-use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Generator;
 
-use function array_fill_callback;
-
 final class VideoGameFixtures extends Fixture implements DependentFixtureInterface
 {
     public function __construct(
         private readonly Generator $faker,
-        private readonly CalculateAverageRating $calculateAverageRating,
-        private readonly CountRatingsPerValue $countRatingsPerValue
     ) {
     }
 
@@ -29,27 +22,27 @@ final class VideoGameFixtures extends Fixture implements DependentFixtureInterfa
     {
         $users = $manager->getRepository(User::class)->findAll();
 
-        $videoGames = array_fill_callback(0, 50, fn (int $index): VideoGame => (new VideoGame)
+        $videoGames = \array_fill_callback(0, 50, fn (int $index): VideoGame => (new VideoGame())
             ->setTitle(sprintf('Jeu vidéo %d', $index))
             ->setDescription($this->faker->paragraphs(10, true))
-            ->setReleaseDate(new DateTimeImmutable())
+            ->setReleaseDate(new \DateTimeImmutable())
             ->setTest($this->faker->paragraphs(6, true))
             ->setRating(($index % 5) + 1)
             ->setImageName(sprintf('video_game_%d.png', $index))
             ->setImageSize(2_098_872)
         );
 
-        $tags = array_fill_callback(0, 5, fn(): Tag => (new Tag)
+        $tags = \array_fill_callback(0, 5, fn (): Tag => (new Tag())
             ->setName($this->faker->word())
         );
 
         array_walk($videoGames, function (VideoGame $videoGame) use ($users, $manager) {
             $numberOfReviews = rand(0, 3);
 
-            for ($i = 0; $i < $numberOfReviews; $i++) {
+            for ($i = 0; $i < $numberOfReviews; ++$i) {
                 $review = (new Review())
                     ->setComment($this->faker->paragraph())
-                    ->setRating(rand(1,5))
+                    ->setRating(rand(1, 5))
                     ->setVideoGame($videoGame)
                     ->setUser($users[array_rand($users)]);
 
@@ -65,7 +58,7 @@ final class VideoGameFixtures extends Fixture implements DependentFixtureInterfa
                 $randomKeys = (array) array_rand($tags, $numberOfTags);
 
                 foreach ($randomKeys as $randomKey) {
-                   $videoGame->getTags()->add($tags[$randomKey]);
+                    $videoGame->getTags()->add($tags[$randomKey]);
                 }
             }
         });

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\VideoGame;
 
+use App\Model\Entity\Tag;
 use App\Model\Entity\VideoGame;
 use App\Tests\Functional\FunctionalTestCase;
-use App\Model\Entity\Tag;
 
 final class FilterTest extends FunctionalTestCase
 {
@@ -41,7 +41,7 @@ final class FilterTest extends FunctionalTestCase
 
         // Construct tagIds array
         $tagIds = [];
-        for ($i = 0; $i < $numberOfTags; $i++) {
+        for ($i = 0; $i < $numberOfTags; ++$i) {
             $tagIds[] = $tags[$i]->getId();
         }
 
@@ -73,7 +73,7 @@ final class FilterTest extends FunctionalTestCase
             $missingTags = array_diff($tagIds, $gameTagIds);
 
             if (empty($missingTags)) {
-                $expectedCount++;
+                ++$expectedCount;
             }
         }
 
@@ -81,15 +81,15 @@ final class FilterTest extends FunctionalTestCase
         self::assertSelectorCount($expectedCount, 'article.game-card');
     }
 
-    public function testShouldFilterWithNonExistentTag() {
-
+    public function testShouldFilterWithNonExistentTag(): void
+    {
         // Load page with parameters and an invalid tag
-        $this->client->request('GET', "/", [
+        $this->client->request('GET', '/', [
             'page' => 1,
             'limit' => 999,
             'filter' => [
-                'tags' => [999]
-            ]
+                'tags' => [999],
+            ],
         ]);
         self::assertResponseIsSuccessful();
 
